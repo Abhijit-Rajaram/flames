@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flames</title>
-    <style>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flames</title>
+  <!-- <style>
         body{
             background-color : white;
             box-sizing: border-box;
@@ -38,10 +39,150 @@
           border-radius: 20px;
           padding: 5px;
         }
-    </style>
+    </style> -->
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      /* Center the container horizontally */
+      align-items: center;
+      /* Center the container vertically */
+      height: 100vh;
+      /* Full viewport height */
+      margin: 0;
+      /* Remove default margin */
+    }
+
+    .container {
+      display: flex;
+      /* Use flexbox for the container */
+      width: 100%;
+      /* Adjust as needed */
+      max-width: 1200px;
+      height: auto;
+      /* Optional: max width for larger screens */
+      border: 0.5px solid black;
+      border-radius: 15px;
+    }
+
+    .left,
+    .right {
+      flex: 1;
+      /* Allow both sides to grow equally */
+      margin: 0.5% 0.5%;
+      /* 5% total margin (2.5% each side) */
+      background-color: lightgray;
+      /* Example background color */
+      height: 100px;
+      /* Example height */
+      display: flex;
+      flex-direction: column;
+    }
+
+    .input-div {
+      margin: auto;
+      /* margin-right: auto; */
+    }
+
+    .name-input {
+      border-radius: 10px;
+      padding: 5px;
+      transition: padding 0.3s, border-radius 0.2s, background-color 0.3s, border-color 0.3s;
+    }
+
+    .name-input:hover,
+    .name-input:focus {
+      border-radius: 20px;
+      padding: 7px;
+      background-color: rgb(243, 205, 205);
+      border-color: rgb(236, 48, 48);
+    }
+
+    .column {
+      display: flex;
+      flex-direction: column;
+      /* justify-content: space-around; */
+      height: 100%;
+    }
+
+    .row {
+      display: flex;
+      /* height: 50%; */
+      justify-content: center;
+    }
+
+    .btn {
+      background-color: red;
+      border-color: red;
+      /* border-top-right-radius: 13px;
+      border-top-right-radius: 13px; */
+      padding: 10px;
+    }
+
+    .left-heart {
+      background-color: brown;
+      height: 20px;
+      width: 20px;
+      border-top-left-radius: 50%;
+      border-top-right-radius: 50%;
+      position: relative;
+      border-bottom-left-radius: 2px 10px;
+
+    }
+
+    .right-heart {
+      background-color: brown;
+      height: 20px;
+      width: 20px;
+      border-top-left-radius: 50%;
+      border-top-right-radius: 50%;
+      position: relative;
+      border-bottom-right-radius: 2px 10px;
+
+    }
+
+    .v-shape {
+      width: 0;
+      height: 10px;
+      border-left: 19px solid transparent;
+      /* Half of the base */
+      border-right: 19px solid transparent;
+      /* Half of the base */
+      border-top: 20px solid brown;
+      /* Height and color of the V */
+      border-top-left-radius: 2px 10px;
+      border-top-right-radius: 2px 10px;
+    }
+  </style>
 </head>
-<body>
-  <fieldset>
+
+<body onload="enterName()">
+  <div class="container">
+    <div class="left">
+      <div class="column">
+        <div class="row" style="height: 50%;">
+          <div class="input-div"><input type="text" class="name-input" id="fname" name="fname"></div>
+          <div style="margin-top: 50px; display: block;z-index: 1;" id="heart">
+            <div class="row">
+              <div class="left-heart"></div>
+              <div class="right-heart"></div>
+            </div>
+            <div class="row">
+              <div class="v-shape"></div>
+            </div>
+          </div>
+          <div class="input-div"><input type="text" class="name-input" id="lname" name="lname"></div>
+        </div>
+        <div class="row">
+          <button class="btn" id="get-result" style="z-index: 2;" onclick="myfunction()">Match</button>
+        </div>
+      </div>
+    </div>
+    <div class="right">
+      <p id="result"></p>
+    </div>
+  </div>
+  <!-- <fieldset>
     <legend>FLAMES</legend>
     <div class="box">
         <input type="text" id="fname" name="fname"><br>
@@ -49,97 +190,162 @@
     </div><br>
     <center><button onclick="myfunction()">Click me</button></center>
     
-  </fieldset>
-  <p id="result"></p>
+  </fieldset> -->
+
 </body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js" integrity="sha512-aNMyYYxdIxIaot0Y1/PLuEu3eipGCmsEUBrUq+7aVyPGMFH8z0eTP0tkqAvv34fzN6z+201d3T8HPb1svWSKHQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
-    function myfunction(){
-        var x = document.getElementById("fname").value;
-        var y = document.getElementById("lname").value;
-        stringConcat(x,y);
-}
-function stringConcat(x,y){
+  function myfunction() {
+    var x = document.getElementById("fname").value;
+    var y = document.getElementById("lname").value;
+    stringConcat(x, y);
+  }
+  function stringConcat(x, y) {
     // converting both name to lower to ingore case sensitivity
     var name1 = x.toLowerCase();
     var name2 = y.toLowerCase();
     // replacing the space betwwen the names
-    name1 = name1.replace(" ","");
-    name2 = name2.replace(" ","");
+    name1 = name1.replace(" ", "");
+    name2 = name2.replace(" ", "");
     // Changing the string into array(we can use Array.from method also)
     var chars1 = name1.split("");
     var chars2 = name2.split("");
     // iterating both names
     for (let i = 0; i < chars1.length; i++) {
-        for (let j = 0; j < chars2.length; j++) {
-            if (chars1[i]==chars2[j]) {
-                // used splice method to remove the matching value in both the names
-                chars1.splice(i,1);
-                chars2.splice(j,1);
-                /* we just change the value of i and j to run the loop from the begining,
-                because after removing index value change for remaining elements*/
-                j = -1;
-                i = -1;
-                break;
-            }
+      for (let j = 0; j < chars2.length; j++) {
+        if (chars1[i] == chars2[j]) {
+          // used splice method to remove the matching value in both the names
+          chars1.splice(i, 1);
+          chars2.splice(j, 1);
+          /* we just change the value of i and j to run the loop from the begining,
+          because after removing index value change for remaining elements*/
+          j = -1;
+          i = -1;
+          break;
         }
+      }
     }
     //concat bot name after removing the common character in both the names
-    var name = chars1.concat(chars2); 
+    var name = chars1.concat(chars2);
     var b = name.length;
     console.log(b)
     //finding the count of unique character in the names
     flames(b)
-}
+  }
 
-function flames(count){
+  function flames(count) {
     //Unique character count of both names
-  
+
     //counting variable
     var tmt = 0;
-      arr = ['f','l','a','m','e','s'];
-      for (var i = 0;i<arr.length;i++){
-        if (arr.length == 1){
-          finalcheck(arr[i]);
-          return arr;
-        }
-        if (tmt == count - 1){
-          arr.splice(i,1);
-          //Need to change tmt value,so that it starts the count from first.
-          tmt = -1;
-          //Need to decrease i value by 1 cause we just removed an element.
-          i = i - 1;
-        }
-        if (i == arr.length -1){
+    arr = ['f', 'l', 'a', 'm', 'e', 's'];
+    for (var i = 0; i < arr.length; i++) {
+      if (arr.length == 1) {
+        finalcheck(arr[i]);
+        return arr;
+      }
+      if (tmt == count - 1) {
+        arr.splice(i, 1);
+        //Need to change tmt value,so that it starts the count from first.
+        tmt = -1;
+        //Need to decrease i value by 1 cause we just removed an element.
+        i = i - 1;
+      }
+      if (i == arr.length - 1) {
         //to run the loop once again,we start i over
-          i = -1;
-        }
-        tmt = tmt +1;
+        i = -1;
       }
+      tmt = tmt + 1;
     }
-    function finalcheck(a){
-      switch (a) {
-        case "f":
-          document.getElementById('result').innerHTML = 'Friend';
-          break;
-        case "l":
-          document.getElementById('result').innerHTML = 'love';
-          break;
-        case "a":
-          document.getElementById('result').innerHTML = 'affection';
-          break;
-        case "m":
-          document.getElementById('result').innerHTML = 'marriage';
-          break;
-        case "e":
-          document.getElementById('result').innerHTML = 'enemy';
-          break;
-        case "s":
-          document.getElementById('result').innerHTML = 'sibling';
-          break;
-        default:
-          document.getElementById('result').innerHTML = 'not found';
-          break;
+  }
+  function finalcheck(a) {
+    switch (a) {
+      case "f":
+        document.getElementById('result').innerHTML = 'Friend';
+        break;
+      case "l":
+        document.getElementById('heart').style.display = 'block';
+        document.getElementById('result').innerHTML = 'love';
+        break;
+      case "a":
+        document.getElementById('result').innerHTML = 'affection';
+        break;
+      case "m":
+        document.getElementById('result').innerHTML = 'marriage';
+        break;
+      case "e":
+        document.getElementById('result').innerHTML = 'enemy';
+        break;
+      case "s":
+        document.getElementById('result').innerHTML = 'sibling';
+        break;
+      default:
+        document.getElementById('result').innerHTML = 'not found';
+        break;
+    }
+  }
+</script>
+<script>
+  function enterName() {
+    console.log('load')
+    lname = ['A', 'b', 'h', 'i', 'j', 'i', 't']
+    // console.log(fname, lname)
+
+    let result_lname = '';
+    let index_lname = 0;
+    lname_tag = document.getElementById('lname')
+    // console.log('lname_tag',lname_tag)
+    const intervalId_lname = setInterval(() => {
+      if (index_lname < lname.length) {
+        result_lname += lname[index_lname];
+        // console.log(result_lname); // Log the current string
+        lname_tag.value = result_lname
+        index_lname++;
+      } else {
+        clearInterval(intervalId_lname); // Stop the interval when done
+        fname()
       }
-    }
+    }, 500); // Change the interval (1000 ms = 1 second) as needed
+    // console.log('lnameend')
+
+  }
+
+  function fname(){
+    console.log('last')
+    fname = ['H', 'e', 'm', 'a', 'l', 'a', 't', 'h', 'a']
+    let result_fname = '';
+    let index_fname = 0;
+    fname_tag = document.getElementById('fname')
+
+    const intervalId_fname = setInterval(() => {
+      if (index_fname < fname.length) {
+        result_fname += fname[index_fname];
+        // console.log(result_fname); // Log the current string
+        fname_tag.value = result_fname
+        index_fname++;
+      } else {
+        clearInterval(intervalId_fname); // Stop the interval when done
+        setInterval(() => {
+          clickButton()
+        }, 1000);
+      }
+    }, 500); // Change the interval (1000 ms = 1 second) as needed
+  }
+
+  function clickButton(){
+    // console.log('clicking button')
+    document.getElementById('get-result').click()
+    const box = document.getElementById('heart');
+
+  anime({
+      targets: box,
+      translateY: -50,  // Move right by 250px
+      duration: 2000,   // Duration of 2 seconds
+      easing: 'easeInOutExpo',  // Easing function
+      // loop: true,  // Loop the animation
+      direction: 'normal'  // Alternate the direction
+  });
+  }
+
 </script>
 </html>
